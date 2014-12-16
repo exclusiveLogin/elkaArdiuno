@@ -62,7 +62,7 @@ void Radial::Step(){
   boolean realLight[24];
   if(direct==true&&stepVal>24)stepVal=1;
   if(direct==false&&stepVal<1)stepVal=24;
-  for(int i=0;i<24;i++){//ïåðåíîñ ìàòðèöû
+  for(int i=0;i<24;i++){//Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹
     if((stepVal+i)>24){
       realLight[(stepVal+i)-24] = lightMap[i];
     }
@@ -70,7 +70,7 @@ void Radial::Step(){
       realLight[stepVal+i] = lightMap[i];
     }    
   }  
-  for(int i=0;i<24;i++){//€êòèâàöèß àïàðàòíîé ÷àñòè
+  for(int i=0;i<24;i++){//ÐÐºÑ‚Ð¸Ð²Ð°Ñ†Ð¸Ñ Ð°Ð¿Ð°Ñ€Ð°Ñ‚Ð½Ð¾Ð¹ Ñ‡Ð°ÑÑ‚Ð¸
     digitalWrite(pinID[i], realLight[i]);
   }
   if(direct==true) stepVal++;
@@ -80,12 +80,12 @@ void Radial::Blink(){
   for(int i=0;i<24;i++){
     lightMap[i]=!lightMap[i];
   }
-  for(int i=0;i<24;i++){//€êòèâàöèß àïàðàòíîé ÷àñòè
+  for(int i=0;i<24;i++){//ÐÐºÑ‚Ð¸Ð²Ð°Ñ†Ð¸Ñ Ð°Ð¿Ð°Ñ€Ð°Ñ‚Ð½Ð¾Ð¹ Ñ‡Ð°ÑÑ‚Ð¸
     digitalWrite(pinID[i], lightMap[i]);
   }
 }
 void Radial::Stop(){
-  for(int i=0;i<24;i++){//€êòèâàöèß àïàðàòíîé ÷àñòè
+  for(int i=0;i<24;i++){//ÐÐºÑ‚Ð¸Ð²Ð°Ñ†Ð¸Ñ Ð°Ð¿Ð°Ñ€Ð°Ñ‚Ð½Ð¾Ð¹ Ñ‡Ð°ÑÑ‚Ð¸
     digitalWrite(pinID[i], LOW);
   }
 }
@@ -138,7 +138,7 @@ void Horizont::Step(){
   if(PDirection==true&&stepVal>8)stepVal=1;
   if(PDirection==false&&stepVal<1)stepVal=8;
   
-  if(!PFill){//åç çàïîëíåíèß
+  if(!PFill){//Ð‘ÐµÐ· Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ
     for(int i=0;i<8;i++){
       lightMap[i]=false;
     }    
@@ -149,7 +149,7 @@ void Horizont::Step(){
       else;
     }
   }
-  else{//‘ çàïîëíåíèåì
+  else{//Ð¡ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸ÐµÐ¼
     for(int i=0; i<8; i++){
       if(stepVal==i){
         lightMap[i]=!lightMap[i];
@@ -163,28 +163,28 @@ void Horizont::Step(){
   
   switch(PColor){
     case 1:  
-      for(int i=0;i<8;i++){//êðàñíûå
+      for(int i=0;i<8;i++){//ÐºÑ€Ð°ÑÐ½Ñ‹Ðµ
       if(lightMap[i]){
         digitalWrite(PPinRed[i], HIGH);
         }
       }
       break;
     case 2:    
-      for(int i=0;i<8;i++){//çåëåíûå
+      for(int i=0;i<8;i++){//Ð·ÐµÐ»ÐµÐ½Ñ‹Ðµ
       if(lightMap[i]){
         digitalWrite(PPinGreen[i], HIGH);
         }
       }
       break;
     case 3:  
-      for(int i=0;i<8;i++){//ñèíèå
+      for(int i=0;i<8;i++){//ÑÐ¸Ð½Ð¸Ðµ
       if(lightMap[i]){
         digitalWrite(PPinBlue[i], HIGH);
         }
       }  
       break;
     case 4:  
-      for(int i=0;i<8;i++){//êðàñíûå + çåëåíûå
+      for(int i=0;i<8;i++){//ÐºÑ€Ð°ÑÐ½Ñ‹Ðµ + Ð·ÐµÐ»ÐµÐ½Ñ‹Ðµ
       if(lightMap[i]){
         digitalWrite(PPinRed[i], HIGH);
         digitalWrite(PPinGreen[i], HIGH);
@@ -192,7 +192,7 @@ void Horizont::Step(){
       }
       break;
     case 5: 
-      for(int i=0;i<8;i++){//êðàñíûå + ñèíèè
+      for(int i=0;i<8;i++){//ÐºÑ€Ð°ÑÐ½Ñ‹Ðµ + ÑÐ¸Ð½Ð¸Ð¸
       if(lightMap[i]){
         digitalWrite(PPinRed[i], HIGH);
         digitalWrite(PPinBlue[i], HIGH);
@@ -200,7 +200,7 @@ void Horizont::Step(){
       }
       break;
     case 6:  
-      for(int i=0;i<8;i++){//ñèíèè + çåëåíûå
+      for(int i=0;i<8;i++){//ÑÐ¸Ð½Ð¸Ð¸ + Ð·ÐµÐ»ÐµÐ½Ñ‹Ðµ
       if(lightMap[i]){
         digitalWrite(PPinBlue[i], HIGH);
         digitalWrite(PPinGreen[i], HIGH);
@@ -208,7 +208,7 @@ void Horizont::Step(){
       }
       break;
     case 7:  
-      for(int i=0;i<8;i++){//êðàñíûå + çåëåíûå + ñèíèè
+      for(int i=0;i<8;i++){//ÐºÑ€Ð°ÑÐ½Ñ‹Ðµ + Ð·ÐµÐ»ÐµÐ½Ñ‹Ðµ + ÑÐ¸Ð½Ð¸Ð¸
       if(lightMap[i]){
         digitalWrite(PPinRed[i], HIGH);
         digitalWrite(PPinGreen[i], HIGH);
@@ -273,8 +273,66 @@ void Horizont::Dance(){
   else stepVal--;
 }
 void Horizont::Stop(){
-  for(int i=0;i<24;i++){//îáíóëßåì âñå
+  for(int i=0;i<24;i++){//Ð¾Ð±Ð½ÑƒÐ»ÑÐµÐ¼ Ð²ÑÐµ
     digitalWrite(PPinID[i], LOW);
   }
 }
-//--------------------------------------------------
+//------------MainStar-----------------
+class MainStar{
+  public:
+    MainStar(int pin);
+    void Blink();
+    void Stop();
+    void Start();
+  private:
+    boolean PState;
+    int PPinID;
+};
+
+MainStar::MainStar(int pin){
+  PPinID = pin;
+  PState = true;
+}
+void MainStar::Stop(){
+  digitalWrite(PPinID, LOW);
+  PState=false;
+}
+void MainStar::Start(){
+  digitalWrite(PPinID, HIGH);
+  PState=true;
+}
+void MainStar::Blink(){
+  PState=!PState;
+  digitalWrite(PPinID, PState);
+}
+//------------Icefall-----------------
+class IceFall{
+  public:
+    IceFall(int pin);
+    void Blink();
+    void Stop();
+    void Start();
+  private:
+    boolean PState;
+    int PPinID;
+};
+
+IceFall::IceFall(int pin){
+  PPinID = pin;
+  PState = true;
+}
+void IceFall::Stop(){
+  digitalWrite(PPinID, LOW);
+  PState=false;
+}
+void IceFall::Start(){
+  digitalWrite(PPinID, HIGH);
+  PState=true;
+}
+void IceFall::Blink(){
+  PState=!PState;
+  digitalWrite(PPinID, PState);
+}
+//------------Stars-----------------
+
+
