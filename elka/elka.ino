@@ -335,7 +335,71 @@ void IceFall::Blink(){
 }
 //------------Stars-----------------
 class Stars{
-
-
+  public:
+    Stars(int pins[12]);
+    void setMode(boolean mode);
+    void Step();
+    void Blink();
+    void Dance();
+    void Stop();
+  private:
+    boolean PFill;
+    boolean PDirection;
+    int PPinID[12];
+    int stepVal;//max 12
+    boolean lightMap[12];
 };
-
+Horizont::Stars(int pins[12]){
+  for(int i=0;i<12;i++){
+    PPinID[i]=pins[i];
+  }
+  PFill=false;
+  PDirection=true;
+  stepVal=1;
+}
+void Horizont::setMode(boolean mode){
+  PFill=mode;//false=single true=solid fill
+}
+void Horizont::Step(){
+  if(PDirection==true&&stepVal>12)stepVal=1;
+  if(PDirection==false&&stepVal<1)stepVal=12;
+  
+  if(!PFill){//Без заполнения
+    for(int i=0;i<12;i++){
+      lightMap[i]=false;
+    }    
+    for(int i=0; i<12; i++){
+      if(stepVal==i){
+        lightMap[i]=true;
+      }
+      else;
+    }
+  }
+  else{//С заполнением
+    for(int i=0; i<12; i++){
+      if(stepVal==i){
+        lightMap[i]=!lightMap[i];
+      }
+      else;
+    }
+  }
+  
+  //Render
+  Stop();  
+  
+  for(int i=0;i<12;i++){
+   if(lightMap[i]){
+     digitalWrite(PPinID[i], HIGH);
+    }
+   else{
+     digitalWrite(PPinID[i], LOW);
+   }
+  }
+  if(PDirection)stepVal++;
+  else stepVal--;  
+}
+void Horizont::Stop(){
+  for(int i=0;i<12;i++){//обнуляем все
+    digitalWrite(PPinID[i], LOW);
+  }
+}

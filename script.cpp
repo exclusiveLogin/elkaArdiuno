@@ -334,4 +334,7 @@ void IceFall::Blink(){
   digitalWrite(PPinID, PState);
 }
 //------------Stars-----------------
+class Stars{
 
+
+};
