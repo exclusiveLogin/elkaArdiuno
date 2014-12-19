@@ -9,7 +9,21 @@ void setup(){
 void loop(){
 
 }
-//--------Radial------
+
+//----------PATTERN-----------------
+
+
+
+
+
+
+
+
+
+
+
+//--------PRIMITIVES-----------------
+//--------Radial---------------------
 class Radial{
   public:
     Radial(int pins[24]);
@@ -349,18 +363,19 @@ class Stars{
     int stepVal;//max 12
     boolean lightMap[12];
 };
-Horizont::Stars(int pins[12]){
+Stars::Stars(int pins[12]){
   for(int i=0;i<12;i++){
     PPinID[i]=pins[i];
+    pinMode(pinID[i], OUTPUT);
   }
   PFill=false;
   PDirection=true;
   stepVal=1;
 }
-void Horizont::setMode(boolean mode){
+void Stars::setMode(boolean mode){
   PFill=mode;//false=single true=solid fill
 }
-void Horizont::Step(){
+void Stars::Step(){
   if(PDirection==true&&stepVal>12)stepVal=1;
   if(PDirection==false&&stepVal<1)stepVal=12;
   
@@ -398,8 +413,65 @@ void Horizont::Step(){
   if(PDirection)stepVal++;
   else stepVal--;  
 }
-void Horizont::Stop(){
+void Stars::Stop(){
   for(int i=0;i<12;i++){//обнуляем все
     digitalWrite(PPinID[i], LOW);
   }
 }
+//-------------SUBTREES------------------------
+class SubTrees{
+  public:
+    SubTrees(int pinr,int ping,int pinb,int pinstart);
+    void Start();
+    void Stop();
+    void Flash(int color);
+  private:
+    int PPinR;
+    int PPinG;
+    int PPinB;
+    int PPinStart;
+    int PColor;//1.2.3
+};
+SubTrees::SubTrees(int pinr,int ping,int pinb,int pinstart){
+  pinMode(pinR, OUTPUT);
+  pinMode(pinG, OUTPUT);
+  pinMode(pinB, OUTPUT);
+  pinMode(pinStart, OUTPUT);
+  PPinR=pinr;
+  PPinG=ping;
+  PPinB=pinb;
+  PPinStart=pinstart;
+  PColor=1;
+}
+void SubTrees::Flash(int color){
+  PColor = color;
+  switch(PColor){
+  case 1:
+    Stop();
+    digitalWrite(PPinR, HIGH);
+    break;
+  case 2:
+    Stop();
+    digitalWrite(PPinG, HIGH);
+    break;
+  case 3:
+    Stop();
+    digitalWrite(PPinB, HIGH);
+    break;
+  default:
+    break;
+  }
+}
+
+void SubTrees::Start(){
+  digitalWrite(PPinStart, HIGH);
+}
+
+void SubTrees::Stop(){
+  digitalWrite(PPinR, LOW);
+  digitalWrite(PPinG, LOW);
+  digitalWrite(PPinB, LOW);
+  digitalWrite(PPinStart, LOW);
+}
+//--------------------------------------------------
+//--------PRIMITIVES END----------------------------
