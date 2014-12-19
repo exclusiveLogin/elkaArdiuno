@@ -354,7 +354,6 @@ class Stars{
     void setMode(boolean mode);
     void Step();
     void Blink();
-    void Dance();
     void Stop();
   private:
     boolean PFill;
@@ -410,6 +409,24 @@ void Stars::Step(){
      digitalWrite(PPinID[i], LOW);
    }
   }
+  if(PDirection)stepVal++;
+  else stepVal--;  
+}
+void Stars::Blink(){
+  if(PDirection==true&&stepVal>12)stepVal=1;
+  if(PDirection==false&&stepVal<1)stepVal=12;
+  
+  if(stepVal%2==0){
+    for(int i=0;i<12;i++){//обнуляем все
+    digitalWrite(PPinID[i], LOW);
+    }
+  }
+  else{
+    for(int i=0;i<12;i++){
+    digitalWrite(PPinID[i], HIGH);
+    }
+  }
+  
   if(PDirection)stepVal++;
   else stepVal--;  
 }
