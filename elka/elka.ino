@@ -106,6 +106,7 @@ class Horizont{
     void Dance();
     void Stop();
     void Reset();
+    void Start();
   private:
     int PColor;
     boolean PFill;
@@ -294,6 +295,11 @@ void Horizont::Dance(){
 void Horizont::Stop(){
   for(int i=0;i<(sizeof(pinsHorizontAll)/sizeof(*pinsHorizontAll));i++){//обнуляем все
     digitalWrite(PPinID[i], LOW);
+  }
+}
+void Horizont::Start(){
+  for(int i=0;i<(sizeof(pinsHorizontAll)/sizeof(*pinsHorizontAll));i++){
+    digitalWrite(PPinID[i], HIGH);
   }
 }
 void Horizont::Reset(){
@@ -542,18 +548,138 @@ void FullTest(){
   ice.Stop();
   mainstar.Stop();
 }
-
-
+void Starting(){
+  stars.Step();
+  delay(400);
+  stars.Step();
+  delay(400);
+  stars.Step();
+  delay(400);
+  stars.Step();
+  delay(400);
+  stars.Step();
+  delay(400);
+  stars.Step();
+  delay(700);
+  stars.Step();
+  delay(200);
+  stars.Step();
+  delay(1200);
+  stars.Step();
+  delay(700);
+  stars.Step();
+  delay(200);
+  stars.Step();  
+  delay(1000);
+  stars.Start();
+  delay(400);
+  hor.Step();
+  delay(400);
+  hor.Step();
+  delay(400);
+  hor.Step();
+  delay(400);
+  hor.Step();
+  delay(400);
+  hor.Step();
+  delay(400);
+  hor.Step();
+  delay(700);
+  hor.Step();
+  delay(200);
+  hor.Step();
+  delay(200);
+  hor.Step();
+  delay(600);
+  hor.Step();
+  delay(200);
+  hor.Step();
+  delay(200);
+  hor.Step();
+  delay(200);
+  hor.Step();
+  delay(200);
+  hor.Reset();
+  hor.setMode(true);
+  for(int i=0; i<10; i++){
+    hor.Step();
+    delay(200);
+  }
+  hor.Start();
+  stars.Stop();
+  hor.Reset();
+  stars.Reset();
+  stars.setMode(true);
+  hor.setMode(true);
+  rad.setNumOfRay(2);
+  ice.Start();
+  for(int i=0;i<30;i++){
+    hor.Dance();
+    stars.Step();
+    delay(250);
+  }
+  hor.Reset();
+  stars.Stop();
+  stars.Reset();
+  for(int i=0;i<20;i++){
+    rad.Step();
+    hor.Step();
+    delay(200);
+  }
+  stars.setMode(true);
+  mainstar.Start();
+  hor.Start();
+  for(int i=0;i<18;i++){
+    rad.Blink();
+    hor.Step();
+    stars.Step();
+    delay(200);
+  }
+  rad.Stop();
+  hor.Stop();
+  rad.Reset();
+  hor.Reset();
+  for(int i=0;i<10;i++){
+    rad.Step();
+    hor.Step();
+    mainstar.Blink();
+    delay(200);
+  }
+  hor.Start();
+  delay(200);
+  stars.Start();
+  delay(200);
+  mainstar.Start();
+  delay(3000);
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+  
+  GlobalMode = 1;
+}
+void greeting(){
+  GlobalMode = 2;
+}
 void setup(){
   Serial.begin(9600);
   pinMode(13, OUTPUT);  
-  FullTest();
+  //FullTest();
+  attachInterrupt(4, greeting, FALLING);
 }
 void loop(){
   digitalWrite(13, HIGH);
   delay(1000);
   digitalWrite(13, LOW);
   delay(1000);
+  if(GlobalMode==2){
+    Starting();
+  }
+  
 }
 
 
