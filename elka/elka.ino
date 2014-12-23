@@ -1042,7 +1042,7 @@ void Starting(){
   
   GlobalMode = 3;
 }
-//------------------------------------
+//-----------PATTERNS-----------------
 void PatternOne(){
   mainstar.Start();
   ice.Start();
