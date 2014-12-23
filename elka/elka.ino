@@ -928,7 +928,6 @@ void FullTest(){
   void standBy();
 }
 //--------------------------------------------------
-
 void Starting(){
   stars.Step();
   delay(400);
@@ -1041,8 +1040,204 @@ void Starting(){
   stars.Reset();
   rad.Reset();
   
-  GlobalMode = 1;
+  GlobalMode = 3;
 }
+//------------------------------------
+void PatternOne(){
+  mainstar.Start();
+  ice.Start();
+  stars.Start();
+  for(int i=0;i<100;i++){
+    rad.Step();
+    hor.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternTwo(){
+  hor.setMode(true);
+  hor.setDirection(false);
+  mainstar.Start();
+  ice.Start();
+  for(int i=0;i<100;i++){
+    mainstar.Blink();
+    hor.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternThree(){
+  hor.setDirection(false);
+  for(int i=0;i<100;i++){
+    mainstar.Blink();
+    hor.Step();
+    stars.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternFour(){
+  stars.Start();
+  mainstar.Start();
+  ice.Start();
+  hor.setMode(true);
+  for(int i=0;i<100;i++){
+    hor.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternFive(){
+  mainstar.Start();
+  rad.setNumOfRay(3);
+  for(int i=0;i<100;i++){
+    stars.Step();
+    rad.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternSix(){
+  ice.Start();
+  hor.Start();
+  rad.setNumOfRay(3);
+  for(int i=0;i<100;i++){
+    mainstar.Blink();
+    rad.Step();        
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternSeven(){
+  mainstar.Start();
+  stars.setMode(true);
+  hor.setMode(true);
+  for(int i=0;i<100;i++){
+    stars.Step();
+    hor.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+void PatternEight(){
+  mainstar.Start();
+  ice.Start();
+  stars.Start();
+  hor.setMode(true);
+  hor.setDirection(false);
+  for(int i=0;i<100;i++){
+    hor.Step();
+    delay(300);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }  
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
+
+
+
 void standBy(){
   GlobalMode = 1;//StandBy mode
 }
@@ -1068,4 +1263,28 @@ void loop(){
   if(GlobalMode==2){
     Starting();
   }  
+  if(GlobalMode==3){
+    PatternOne();
+  }  
+  if(GlobalMode==3){
+    PatternTwo();
+  }
+  if(GlobalMode==3){
+    PatternThree();
+  }
+  if(GlobalMode==3){
+    PatternFour();
+  }
+  if(GlobalMode==3){
+    PatternFive();
+  }
+  if(GlobalMode==3){
+    PatternSix();
+  }
+  if(GlobalMode==3){
+    PatternSeven();
+  }
+  if(GlobalMode==3){
+    PatternEight();
+  }
 }
