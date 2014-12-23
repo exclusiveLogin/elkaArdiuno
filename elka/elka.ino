@@ -25,6 +25,7 @@ class Radial{
     void Step();
     void Blink();
     void Stop();
+    void Start();
     void Reset();
   private:
     void lightMaping();
@@ -87,6 +88,11 @@ void Radial::Blink(){
 void Radial::Stop(){
   for(int i=0;i<(sizeof(pinsRadial)/sizeof(*pinsRadial));i++){//Активация апаратной части
     digitalWrite(pinID[i], LOW);
+  }
+}
+void Radial::Start(){
+  for(int i=0;i<(sizeof(pinsRadial)/sizeof(*pinsRadial));i++){//Активация апаратной части
+    digitalWrite(pinID[i], HIGH);
   }
 }
 void Radial::Reset(){
@@ -367,8 +373,9 @@ void IceFall::Blink(){
 //------------Stars-----------------
 class Stars{
   public:
-    Stars(int pins[12]);
+    Stars(int pins[(sizeof(pinsStars)/sizeof(*pinsStars))]);
     void setMode(boolean mode);
+    void setDirection(boolean dir);
     void Step();
     void Blink();
     void Stop();
@@ -377,12 +384,12 @@ class Stars{
   private:
     boolean PFill;
     boolean PDirection;
-    int PPinID[12];
-    int stepVal;//max 12
-    boolean lightMap[12];
+    int PPinID[(sizeof(pinsStars)/sizeof(*pinsStars))];
+    int stepVal;
+    boolean lightMap[(sizeof(pinsStars)/sizeof(*pinsStars))];
 };
-Stars::Stars(int pins[12]){
-  for(int i=0;i<12;i++){
+Stars::Stars(int pins[(sizeof(pinsStars)/sizeof(*pinsStars))]){
+  for(int i=0;i<(sizeof(pinsStars)/sizeof(*pinsStars));i++){
     PPinID[i]=pins[i];
     pinMode(PPinID[i], OUTPUT);
   }
@@ -392,6 +399,9 @@ Stars::Stars(int pins[12]){
 }
 void Stars::setMode(boolean mode){
   PFill=mode;//false=single true=solid fill
+}
+void Stars::setDirection(boolean dir){
+  PDirection=dir;//false=reverse true=forward
 }
 void Stars::Step(){
   if(PDirection==true&&stepVal>(sizeof(pinsStars)/sizeof(*pinsStars)))stepVal=1;
@@ -520,9 +530,9 @@ void SubTrees::Stop(){
   digitalWrite(PPinB, LOW);
   digitalWrite(PPinStart, LOW);
 }*/
-//--------------------------------------------------
 //--------PRIMITIVES END----------------------------
 
+//--------Objects init------------------------------
 Radial rad(pinsRadial);
 Horizont hor(pinsHorizontAll,pinsHorizontRed,pinsHorizontGreen,pinsHorizontBlue);
 Stars stars(pinsStars);
@@ -532,22 +542,227 @@ MainStar mainstar(pinMainStar);
 int GlobalMode=0;//0-test 1-standby 2-start 3-cyrcle
 
 void FullTest(){
-  //Сюда делаем полный перебор каналов
-  Serial.println(sizeof(pinsRadial)/sizeof(*pinsRadial));
-  Serial.println(sizeof(pinsHorizontAll)/sizeof(*pinsHorizontAll));
-  Serial.println(sizeof(pinsHorizontRed)/sizeof(*pinsHorizontRed));
-  Serial.println(sizeof(pinsHorizontGreen)/sizeof(*pinsHorizontGreen));
-  Serial.println(sizeof(pinsHorizontBlue)/sizeof(*pinsHorizontBlue));
-  Serial.println(sizeof(pinsStars)/sizeof(*pinsStars));
-
-  for(int i=0;i<100;i++){
-    ice.Blink();
-    mainstar.Blink();
-    delay(200);    
+  //Первичный тест системы
+  Serial.println("Wait 10 seconds");
+  Serial.println("System preparing...");
+  delay(10000);
+  Serial.println("Starting...");
+  delay(2500);
+  Serial.println("Preparing for full test");
+  delay(2500);
+  Serial.println("Num of Radial chanels: ");
+  Serial.print(sizeof(pinsRadial)/sizeof(*pinsRadial));
+  delay(1000);
+  Serial.println("Num of Horizontal loop ALL chanels: ");
+  Serial.print(sizeof(pinsHorizontAll)/sizeof(*pinsHorizontAll));
+  delay(1000);
+  Serial.println("Num of Horizontal loop RED chanels: ");
+  Serial.print(sizeof(pinsHorizontRed)/sizeof(*pinsHorizontRed));
+  delay(1000);
+  Serial.println("Num of Horizontal loop GREEN chanels: ");
+  Serial.print(sizeof(pinsHorizontGreen)/sizeof(*pinsHorizontGreen));
+  delay(1000);
+  Serial.println("Num of Horizontal loop BLUE chanels: ");
+  Serial.print(sizeof(pinsHorizontBlue)/sizeof(*pinsHorizontBlue));
+  delay(1000);
+  Serial.println("Num of STARS chanels: ");
+  Serial.print(sizeof(pinsStars)/sizeof(*pinsStars));
+  delay(1000);
+  Serial.println("Reseting ALL FX");
+  rad.Reset();
+  hor.Reset();
+  stars.Reset();
+  Serial.println("FX reseted");
+  Serial.println("Testing Hardware IO");
+  Serial.println("Radial TEST");
+  delay(3000);
+  //-----------------------------------------
+  Serial.println("Radial loop 50 steps 1 preset");
+  rad.setNumOfRay(1);
+  for(int i=0;i<50;i++){
+    rad.Step();
+    delay(500);    
   }
-  ice.Stop();
+  rad.Stop();
+  rad.Reset();
+  //-----------------------------------------
+  Serial.println("Radial loop 50 steps 2 preset");
+  rad.setNumOfRay(2);
+  for(int i=0;i<50;i++){
+    rad.Step();
+    delay(500);    
+  }
+  rad.Stop();
+  rad.Reset();
+  //-----------------------------------------
+  Serial.println("Radial blinks 50 steps 3 preset");
+  rad.setNumOfRay(3);
+  for(int i=0;i<50;i++){
+    rad.Blink();
+    delay(500);    
+  }
+  rad.Stop();
+  rad.Reset();
+  //-----------------------------------------
+  Serial.println("Radial blinks 50 steps 4 preset");
+  rad.setNumOfRay(4);
+  for(int i=0;i<50;i++){
+    rad.Blink();
+    delay(500);    
+  }
+  rad.Stop();
+  rad.Reset();
+  //-----------------------------------------
+  Serial.println("Radial blinks 50 steps 5 preset");
+  rad.setNumOfRay(5);
+  for(int i=0;i<50;i++){
+    rad.Blink();
+    delay(500);    
+  }
+  rad.Stop();
+  rad.Reset();
+  //-----------------------------------------  
+  Serial.println("Horizont TEST");
+  delay(3000);
+  //-----------------------------------------
+  Serial.println("Horizont loop 50 steps");
+  for(int i=0;i<50;i++){
+    hor.Step();
+    delay(500);    
+  }
+  hor.Stop();
+  hor.Reset();
+  //-----------------------------------------
+  Serial.println("Horizont loop 50 steps with fill");
+  for(int i=0;i<50;i++){
+    hor.Step();
+    delay(500);    
+  }
+  hor.Stop();
+  hor.Reset();
+  //-----------------------------------------
+  Serial.println("Horizont Dance 50 steps");
+  for(int i=0;i<50;i++){
+    hor.Dance();
+    delay(500);    
+  }
+  hor.Stop();
+  hor.Reset();
+  //-----------------------------------------
+  Serial.println("Horizont Start");
+  hor.Start();
+  delay(2000);
+  hor.Stop();
+  hor.Reset();
+  //-----------------------------------------  
+  Serial.println("Stars TEST");
+  delay(3000);
+  //----------------------------------------- 
+  Serial.println("Stars loop 50 steps without fill");
+  for(int i=0;i<50;i++){
+    stars.Step();
+    delay(500);    
+  }
+  stars.Stop();
+  stars.Reset();
+  //-----------------------------------------
+  Serial.println("Stars loop 50 steps without fill REVERSE");
+  stars.setDirection(false);
+  for(int i=0;i<50;i++){
+    stars.Step();
+    delay(500);    
+  }
+  stars.Stop();
+  stars.Reset();
+  //-----------------------------------------
+  Serial.println("Stars loop 50 steps with fill");
+  stars.setMode(true);
+  for(int i=0;i<50;i++){
+    stars.Step();
+    delay(500);
+  }
+  stars.Stop();
+  stars.Reset();
+  //-----------------------------------------
+  Serial.println("Stars loop 50 steps with fill REVERSE");
+  stars.setMode(true);
+  stars.setDirection(false);
+  for(int i=0;i<50;i++){
+    stars.Step();
+    delay(500);
+  }
+  stars.Stop();
+  stars.Reset();
+  //-----------------------------------------
+  Serial.println("Stars Blinks 50 steps");
+  for(int i=0;i<50;i++){
+    stars.Blink();
+    delay(500);    
+  }
+  stars.Stop();
+  stars.Reset();
+  //-----------------------------------------
+  Serial.println("MainStar TEST");
+  delay(1000);
+  mainstar.Start();
+  Serial.println("Main Star is ON");
+  delay(1000);
   mainstar.Stop();
+  Serial.println("Main Star is OFF");
+  delay(1000);
+  //-----------------------------------------
+  Serial.println("IceFall TEST");
+  delay(1000);
+  ice.Start();
+  Serial.println("IceFall is ON");
+  delay(1000);
+  ice.Stop();
+  Serial.println("IceFall is OFF");
+  delay(1000);
+  //-----------------------------------------
+  Serial.println("Stress TEST");
+  delay(5000);
+  Serial.println("Radial Start");
+  rad.Start();
+  delay(1000);
+  Serial.println("Horizont Start");
+  hor.Start();
+  delay(1000);
+  Serial.println("Stars Start");
+  stars.Start();
+  delay(1000);
+  Serial.println("Main Star Start");
+  mainstar.Start();
+  delay(1000);
+  Serial.println("IceFall Start");
+  ice.Start();
+  delay(10000);
+  for(int i=0; i<10; i++){
+    if(i%2==0){
+      Serial.println("All OFF");
+      rad.Stop();
+      hor.Stop();
+      stars.Stop();
+      mainstar.Stop();
+      ice.Stop();
+      delay(10000);
+    }
+    else{
+      Serial.println("All ON");
+      rad.Start();
+      hor.Start();
+      stars.Start();
+      mainstar.Start();
+      ice.Start();
+      delay(10000);
+    }
+  } 
+  Serial.println("Test completed");
+  Serial.println("System READY");
+  void standBy();
 }
+
+
 void Starting(){
   stars.Step();
   delay(400);
@@ -662,8 +877,14 @@ void Starting(){
   
   GlobalMode = 1;
 }
+void standBy(){
+  GlobalMode = 1;//StandBy mode
+}
 void greeting(){
-  GlobalMode = 2;
+  GlobalMode = 2;//Starting mode
+}
+void PatternStack(){
+  GlobalMode = 3;//Loop mode
 }
 void setup(){
   Serial.begin(9600);
@@ -678,9 +899,5 @@ void loop(){
   delay(1000);
   if(GlobalMode==2){
     Starting();
-  }
-  
+  }  
 }
-
-
-
