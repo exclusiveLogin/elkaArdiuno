@@ -2,6 +2,7 @@
 name:LightDinamic Trees
 developer:Sergey Savin
 Kolibri Media Holding
+Version:1.1
 */
 //Global SECTION
 int pinsRadial[5]={2,3,4,5,6};
