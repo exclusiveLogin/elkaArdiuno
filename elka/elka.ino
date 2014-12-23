@@ -1412,30 +1412,55 @@ void PatternEight(){
 
 
 void standBy(){
-  Serial.println("Standby mode activated");
   GlobalMode = 1;//StandBy mode
 }
 void greeting(){
-  Serial.println("Starting mode activated");
   GlobalMode = 2;//Starting mode
 }
 void PatternStack(){
-  Serial.println("Loop mode activated");
-  GlobalMode = 3;//Loop mode
+  GlobalMode = 3;//Loop mode+
 }
 void setup(){
   Serial.begin(9600);
   pinMode(13, OUTPUT);  
-  attachInterrupt(4, greeting, FALLING);
-  attachInterrupt(3, standBy, FALLING);
+  pinMode(19, INPUT);
+  pinMode(20, INPUT);
+  pinMode(21, INPUT);
+  
   attachInterrupt(2, PatternStack, FALLING);
+  attachInterrupt(3, standBy, FALLING);
+  attachInterrupt(4, greeting, FALLING);
   FullTest();
 }
 void loop(){
+  switch(GlobalMode){
+    case 0:
+      Serial.println("TEST MODE activated");
+      break;
+    case 1:
+      Serial.println("STANDBY MODE activated");
+      break;
+    case 2:
+      Serial.println("STARTING MODE activated");
+      break;
+    case 3:
+      Serial.println("LOOP MODE activated");
+      break;
+    default:Serial.println("Some error");
+      break;
+  }
   digitalWrite(13, HIGH);
-  delay(1000);
+  delay(500);
+  hor.Stop();
+  stars.Stop();
+  rad.Stop();
+  mainstar.Stop();
+  ice.Stop();
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
   digitalWrite(13, LOW);
-  delay(1000);
+  delay(500);
   if(GlobalMode==2){
     Starting();
   }  
