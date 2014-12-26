@@ -1408,6 +1408,35 @@ void PatternEight(){
   stars.Reset();
   rad.Reset();
 }
+void PatternNine(){
+  Serial.println("Pattern nine started");
+  ice.Start();
+  delay(1000);
+  hor.Start();
+  delay(1000);
+  for(int i=0;i<20;i++){
+    rad.Step();
+    stars.Step();
+    delay(250);
+    //--------------------------------
+    if(GlobalMode!=3){
+    Serial.println("Loop aborted");
+    return;
+    }
+    //--------------------------------
+  }    
+  hor.Start();
+  delay(500);
+  stars.Stop();
+  delay(500);
+  rad.Stop();
+  delay(500);
+  mainstar.Start();
+  delay(1000);
+  hor.Reset();
+  stars.Reset();
+  rad.Reset();
+}
 
 
 
