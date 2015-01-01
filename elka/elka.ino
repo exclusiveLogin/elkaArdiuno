@@ -5,17 +5,18 @@ Kolibri Media Holding
 Version:1.1
 */
 //Global SECTION
-int pinsRadial[5]={2,3,4,5,6};
-int pinsHorizontAll[15]={22,23,24,25,26,27,28,29,30,31,32,33,34,35,36};
-int pinsHorizontRed[5]={22,23,24,25,26};
-int pinsHorizontGreen[5]={27,28,29,30,31};
-int pinsHorizontBlue[5]={32,33,34,35,36};
-int pinsStars[4]={8,9,10,11};
+int pinsRadial[]={2,3,4,5,6,7,8,9};
+int pinsHorizontAll[]={22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48};
+int pinsHorizontRed[]={22,23,24,25,26,27,28,29,30};
+int pinsHorizontGreen[]={31,32,33,34,35,36,37,38,39};
+int pinsHorizontBlue[]={40,41,42,43,44,45,46,47,48};
+int pinsStars[]={10,11,12,14,15,16,17};
 int pinStart = 19;//кнопка приветствия Елочка гори.
 int pinCyrcle = 20;//кнопка включения стека паттернов
 int pinStop =21;//кнопка полного останова
 int pinMainStar = 52;
 int pinIceFall = 51;
+int pinMultilight = 53;
 //--------PRIMITIVES-----------------
 //--------Radial---------------------
 class Radial{
@@ -30,14 +31,14 @@ class Radial{
     void Reset();
   private:
     void lightMaping();
-    int pinID[5];
+    int pinID[8];
     int numRaysVal;
     int stepVal;//max 5
     boolean lightMap[(sizeof(pinsRadial)/sizeof(*pinsRadial))];
     boolean realLight[(sizeof(pinsRadial)/sizeof(*pinsRadial))];
 };
 Radial::Radial(int pins[(sizeof(pinsRadial)/sizeof(*pinsRadial))]){
-  stepVal=1;//max 5
+  stepVal=1;
   for(int i=0;i<(sizeof(pinsRadial)/sizeof(*pinsRadial));i++){
     pinID[i]=pins[i];
     pinMode(pinID[i], OUTPUT);
@@ -549,7 +550,7 @@ IceFall ice(pinIceFall);
 MainStar mainstar(pinMainStar);
 
 int GlobalMode=0;//0-test 1-standby 2-start 3-cyrcle
-
+boolean lock=false;
 void FullTest(){
   //Первичный тест системы
   Serial.println("Wait 10 seconds");
@@ -817,6 +818,7 @@ void FullTest(){
   }
   //--------------------------------
   Serial.println("Horizont loop 50 steps with fill");
+  hor.setMode(true);
   for(int i=0;i<50;i++){
     hor.Step();
     delay(200);    
@@ -1011,6 +1013,13 @@ void FullTest(){
   ice.Stop();
   Serial.println("IceFall is OFF");
   delay(1000);
+  Serial.println("MultiLight is ON");
+  digitalWrite(53,HIGH);
+  delay(3000);
+  Serial.println("Multilight is OFF");
+  digitalWrite(53,LOW);
+  delay(1000);
+  
   //-----------------------------------------
   //--------------------------------
   if(GlobalMode){
@@ -1090,7 +1099,7 @@ void FullTest(){
   hor.Reset();
   stars.Reset();
   rad.Reset();
-  void standBy();
+  standBy();
 }
 //--------------------------------------------------
 void Starting(){
@@ -1206,6 +1215,7 @@ void Starting(){
   rad.Reset();
   
   GlobalMode = 3;
+  lock=true;
 }
 //-----------PATTERNS-----------------
 void PatternOne(){
@@ -1217,12 +1227,12 @@ void PatternOne(){
     rad.Step();
     hor.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1243,12 +1253,12 @@ void PatternTwo(){
     mainstar.Blink();
     hor.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1267,12 +1277,12 @@ void PatternThree(){
     hor.Step();
     stars.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1292,12 +1302,12 @@ void PatternFour(){
   for(int i=0;i<20;i++){
     hor.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1316,12 +1326,12 @@ void PatternFive(){
     stars.Step();
     rad.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1341,12 +1351,12 @@ void PatternSix(){
     mainstar.Blink();
     rad.Step();        
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1366,12 +1376,12 @@ void PatternSeven(){
     stars.Step();
     hor.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1392,12 +1402,12 @@ void PatternEight(){
   for(int i=0;i<20;i++){
     hor.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }  
   hor.Stop();
   stars.Stop();
@@ -1418,12 +1428,12 @@ void PatternNine(){
     rad.Step();
     stars.Step();
     delay(250);
-    //--------------------------------
+    /*--------------------------------
     if(GlobalMode!=3){
     Serial.println("Loop aborted");
     return;
     }
-    //--------------------------------
+    //--------------------------------*/
   }    
   hor.Start();
   delay(500);
@@ -1444,7 +1454,9 @@ void standBy(){
   GlobalMode = 1;//StandBy mode
 }
 void greeting(){
-  GlobalMode = 2;//Starting mode
+  if(!lock){
+    GlobalMode = 2;//Starting mode
+  }
 }
 void PatternStack(){
   GlobalMode = 3;//Loop mode+
@@ -1455,31 +1467,37 @@ void setup(){
   pinMode(19, INPUT);
   pinMode(20, INPUT);
   pinMode(21, INPUT);
+  pinMode(53, OUTPUT);
+  GlobalMode = 1;
   
-  attachInterrupt(2, PatternStack, FALLING);
-  attachInterrupt(3, standBy, FALLING);
-  attachInterrupt(4, greeting, FALLING);
-  FullTest();
+  //attachInterrupt(2, PatternStack, FALLING);
+  //attachInterrupt(3, standBy, FALLING);
+  attachInterrupt(4, greeting, RISING);
+  //FullTest();
 }
 void loop(){
   switch(GlobalMode){
     case 0:
       Serial.println("TEST MODE activated");
+      digitalWrite(pinMultilight,LOW);
       break;
     case 1:
       Serial.println("STANDBY MODE activated");
+      digitalWrite(pinMultilight,LOW);
       break;
     case 2:
       Serial.println("STARTING MODE activated");
+      digitalWrite(pinMultilight,LOW);
       break;
     case 3:
       Serial.println("LOOP MODE activated");
+      digitalWrite(pinMultilight,HIGH);
       break;
     default:Serial.println("Some error");
       break;
   }
   digitalWrite(13, HIGH);
-  delay(500);
+  delay(50);
   hor.Stop();
   stars.Stop();
   rad.Stop();
@@ -1490,31 +1508,18 @@ void loop(){
   rad.Reset();
   digitalWrite(13, LOW);
   delay(500);
-  if(GlobalMode==2){
+  if(GlobalMode==2&&!lock){
     Starting();
-  }  
+  }
   if(GlobalMode==3){
-    PatternOne();
-  }  
-  if(GlobalMode==3){
+    PatternOne();  
     PatternTwo();
-  }
-  if(GlobalMode==3){
     PatternThree();
-  }
-  if(GlobalMode==3){
     PatternFour();
-  }
-  if(GlobalMode==3){
     PatternFive();
-  }
-  if(GlobalMode==3){
     PatternSix();
-  }
-  if(GlobalMode==3){
     PatternSeven();
-  }
-  if(GlobalMode==3){
     PatternEight();
+    PatternNine();
   }
 }
